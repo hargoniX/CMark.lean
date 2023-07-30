@@ -28,10 +28,10 @@ def wrapperOTarget (pkg : Package) : IndexBuildM (BuildJob FilePath) := do
     let flags := #["-I", (← getLeanIncludeDir).toString, "-I", (pkg.dir / cmarkDir).toString, "-fPIC"]
     compileO (wrapperName ++ "c") oFile srcFile flags
 
-@[defaultTarget]
+@[default_target]
 lean_lib CMark
 
-extern_lib cmark (pkg : Package) := do
+extern_lib cmark (pkg) := do
   let libFile := pkg.dir / buildDir / cmarkDir / "libleancmark.a"
   let oTargets := (←srcNames.mapM (cmarkOTarget pkg)) ++ #[←wrapperOTarget pkg]
   buildStaticLib libFile oTargets
